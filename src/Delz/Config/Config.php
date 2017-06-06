@@ -63,6 +63,33 @@ class Config implements IConfig
     }
 
     /**
+     * 不清楚文件类型，根据后缀，使用不同的方法
+     *
+     * @param string $file
+     */
+    public function loadFile($file)
+    {
+        $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        switch($extension) {
+            case "ini":
+                $this->loadIni($file);
+                break;
+            case "xml":
+                $this->loadXml($file);
+                break;
+            case "yml":
+                $this->loadYaml($file);
+                break;
+            case "php":
+                $this->loadPhp($file);
+                break;
+            default:
+                //不用处理
+                break;
+        }
+    }
+
+    /**
      * 从ini文件中载入配置
      *
      * @param string $iniFile ini文件地址
