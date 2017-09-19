@@ -27,6 +27,9 @@ class Yaconf implements IConfig
      */
     public function __construct($namespace)
     {
+        if(!extension_loaded("yaconf")) {
+            throw new \RuntimeException("Please install yaconf extension.");
+        }
         $this->namespace = $namespace;
     }
 
