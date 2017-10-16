@@ -1,21 +1,22 @@
 {
-    "name": "delz/config",
-    "description": "配置组件",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "徐威",
-            "email": "sheawey@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "php": ">=7.0.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Delz\\Config\\": "src/Delz/Config"
-        }
+  "name": "delz/config",
+  "description": "配置组件",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "徐威",
+      "email": "sheawey@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Delz\\Config\\": "src/Delz/Config"
+    }
+  }
 }
