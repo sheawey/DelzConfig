@@ -19,6 +19,21 @@ class Config implements IConfig
     private $map = [];
 
     /**
+     * 读取过的配置参数
+     *
+     * 避免重复读取
+     *
+     * 结构是：　
+     * {
+     *      'found' => true,
+     *      'value' => 'abc'
+     * }
+     *
+     * @var array
+     */
+    private $resolved = [];
+
+    /**
      * @param array $map
      */
     public function __construct($map = [])
@@ -34,15 +49,29 @@ class Config implements IConfig
         if ($key === null) {
             return $this->map;
         }
+        if(isset($this->resolved[$key])) {
+            if($this->resolved[$key]['found']) {
+                return $this->resolved[$key]['value'];
+            } else {
+                return $default;
+            }
+        }
         //引用可减少内存使用
         $pos =& $this->map;
         $parts = explode('.', $key);
         foreach ($parts as $part) {
             if (!isset($pos[$part])) {
+                $this->resolved[$key] = [
+                    'found' => false,
+                ];
                 return $default;
             }
             $pos =& $pos[$part];
         }
+        $this->resolved[$key] = [
+            'found' => true,
+            'value' => $pos
+        ];
         return $pos;
     }
 
@@ -51,6 +80,13 @@ class Config implements IConfig
      */
     public function has($key)
     {
+        if(isset($this->resolved[$key])) {
+            if($this->resolved[$key]['found']) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         $pos =& $this->map;
         $parts = explode('.', $key);
         foreach ($parts as $part) {
@@ -197,6 +233,8 @@ class Config implements IConfig
      */
     public function load($map = [])
     {
+        //每次新加载，清空resolved
+        $this->resolved = [];
         foreach ($map as $k => $v) {
             if (is_array($v)) {
                 $newMap = [];
