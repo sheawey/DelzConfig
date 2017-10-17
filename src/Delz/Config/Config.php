@@ -129,14 +129,14 @@ class Config implements IConfig
      * 从ini文件中载入配置
      *
      * @param string $iniFile ini文件地址
-     * @throws Exception
+     * @throws \RuntimeException
      */
     public function loadIni($iniFile)
     {
         $iniFile = realpath($iniFile);
         $iniMap = parse_ini_file($iniFile, true, INI_SCANNER_RAW);
         if ($iniMap === false) {
-            throw new Exception("Configuration file " . $iniFile . " can't be loaded");
+            throw new \RuntimeException("Configuration file " . $iniFile . " can't be loaded");
         }
         $this->load($iniMap);
     }
@@ -159,17 +159,17 @@ class Config implements IConfig
      * 从yaml文件中载入配置
      *
      * @param string $yamlFile yaml文件地址
-     * @throws Exception
+     * @throws \RuntimeException
      */
     public function loadYaml($yamlFile)
     {
         if (!extension_loaded('yaml')) {
-            throw new Exception('Yaml extension not loaded');
+            throw new \RuntimeException('Yaml extension not loaded');
         }
         $yamlFile = realpath($yamlFile);
         $yamlMap = yaml_parse_file($yamlFile);
         if ($yamlMap === false) {
-            throw new Exception('Configuration file ' . $yamlFile . ' can\'t be loaded');
+            throw new \RuntimeException('Configuration file ' . $yamlFile . ' can\'t be loaded');
         }
         $this->load($yamlMap);
     }
@@ -178,14 +178,14 @@ class Config implements IConfig
      * 从xml文件中载入配置
      *
      * @param string $xmlFile xml文件地址
-     * @throws Exception
+     * @throws \RuntimeException
      */
     public function loadXml($xmlFile)
     {
         $xmlFile = realpath($xmlFile);
         $xml = simplexml_load_file($xmlFile);
         if ($xml === false) {
-            throw new Exception('Configuration file ' . $xmlFile . ' can\'t be loaded');
+            throw new \RuntimeException('Configuration file ' . $xmlFile . ' can\'t be loaded');
         }
         $this->load(json_decode(json_encode($xml), true));
     }
