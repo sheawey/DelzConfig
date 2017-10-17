@@ -45,40 +45,6 @@ class Yaconf implements IConfig
     }
 
     /**
-     * 提供将数组转化为Yaconf需要的ini字符串
-     *
-     * @param array $data
-     * @param array $parent
-     * @return string
-     */
-    public static function arr2ini(array $data, array $parent = [])
-    {
-        $output = '';
-        foreach ($data as $k => $v) {
-            $index = str_replace(' ', '-', $k);
-            if (is_array($v)) {
-                $sec = array_merge((array)$parent, (array)$index);
-                //$output .= PHP_EOL . '[' . join('.', $sec) . ']' . PHP_EOL;
-                $output .= self::arr2ini($v, $sec);
-            } else {
-                $key = join('.', $parent);
-                $output .= $key . ($key ? '.' : '') . "$index=";
-                if (is_numeric($v) || is_float($v)) {
-                    $output .= "$v";
-                } elseif (is_bool($v)) {
-                    $output .= ($v === true) ? 1 : 0;
-                } elseif (is_string($v)) {
-                    $output .= "'" . addcslashes($v, "'") . "'";
-                } else {
-                    $output .= "$v";
-                }
-                $output .= PHP_EOL;
-            }
-        }
-        return $output;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function has($key)
